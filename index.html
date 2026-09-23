@@ -341,25 +341,33 @@
     }
 
     // ANALISI CON FALLBACK DEI MODELLI GEMINI
-    async function analyzePhoto() {
-      const apiKey = localStorage.getItem('gemini_api_key');
-      if (!apiKey) {
-        alert('Inserisci prima la tua Gemini API Key nelle impostazioni (icona ingranaggio in alto)!');
-        openSettings();
-        return;
-      }
+   async function analyzePhoto() {
+  document.getElementById('loading-spinner').classList.remove('hidden');
+  document.getElementById('scan-actions').classList.add('hidden');
 
-      document.getElementById('loading-spinner').classList.remove('hidden');
-      document.getElementById('scan-actions').classList.add('hidden');
+  const base64Data = resizedImageBase64.split(',')[1];
 
-      const base64Data = resizedImageBase64.split(',')[1];
-      const promptText = `Analizza questo piatto e rispondi ESCLUSIVAMENTE con un JSON valido con questa struttura:
-{
-  "advice": "breve commento nutrizionale sul piatto",
-  "confidence": "Alta",
-  "items": [
-    { "name": "nome cibo", "grams": 100, "kcal": 150, "protein": 10, "carbs": 20, "fat": 5 }
-  ]
+  try {
+    // Chiama la funzione serverless locale al posto di Google
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageBase64: base64Data })
+    });
+
+    if (!res.ok) throw new Error('Errore di comunicazione col server');
+
+    const resultData = await res.json();
+    currentAnalysisResult = resultData;
+    displayAnalysisResult(currentAnalysisResult);
+
+  } catch (err) {
+    console.error(err);
+    alert('Impossibile analizzare la foto. Riprova.');
+    document.getElementById('scan-actions').classList.remove('hidden');
+  } finally {
+    document.getElementById('loading-spinner').classList.add('hidden');
+  }
 }`;
 
       // Tenta prima con gemini-1.5-flash e poi con gemini-2.0-flash se fallisce
