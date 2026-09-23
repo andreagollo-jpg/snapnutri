@@ -366,7 +366,7 @@
       reader.readAsDataURL(file);
     }
 
-    // ANALISI CON API GEMINI (USANDO REST API DIRETTA PER MASSIMA COMPATIBILITÀ)
+    // ANALISI CON API GEMINI (MODELLO GEMINI-2.5-FLASH CON ENDPOINT AGGIORNATO)
     async function analyzePhoto() {
       const apiKey = localStorage.getItem('gemini_api_key');
       if (!apiKey) {
@@ -381,8 +381,9 @@
 
       try {
         const base64Data = currentImageBase64.split(',')[1];
+        const mimeType = currentImageBase64.split(';')[0].split(':')[1] || 'image/jpeg';
         
-        const promptText = `Sei un nutrizionista esperto. Analizza l'immagine di questo piatto e restituisci ESCLUSIVAMENTE un oggetto JSON valido (senza markdown, senza formattazione \`\`\`json) con la seguente struttura esatta:
+        const promptText = `Sei un nutrizionista esperto. Analizza l'immagine di questo piatto e restituisci ESCLUSIVAMENTE un oggetto JSON valido (senza blocchi markdown, senza testo iniziale o finale) con la seguente struttura:
 {
   "advice": "breve consiglio o descrizione del piatto",
   "confidence": "Alta",
@@ -398,15 +399,15 @@
   ]
 }`;
 
-        // Endpoint REST ufficiale di Google Gemini
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        // Chiamata aggiornata all'endpoint gemini-2.5-flash
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{
               parts: [
                 { text: promptText },
-                { inline_data: { mime_type: "image/jpeg", data: base64Data } }
+                { inline_data: { mime_type: mimeType, data: base64Data } }
               ]
             }]
           })
@@ -418,178 +419,11 @@
           throw new Error(data.error.message || 'Errore durante la chiamata API');
         }
 
+        if (!data.candidates || !data.candidates[0].content) {
+          throw new Error('Nessun risultato restituito dall\'AI');
+        }
+
         let responseText = data.candidates[0].content.parts[0].text;
-        // Pulisci eventuale formattazione markdown
-        responseText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
         
-        currentAnalysisResult = JSON.parse(responseText);
-        displayAnalysisResult(currentAnalysisResult);
-
-      } catch (err) {
-        alert('Errore nell\'analisi dell\'immagine: ' + err.message);
-        document.getElementById('scan-actions').classList.remove('hidden');
-      } finally {
-        document.getElementById('loading-spinner').classList.add('hidden');
-      }
-    }
-
-    // MOSTRA RISULTATO ANALISI
-    function displayAnalysisResult(result) {
-      document.getElementById('analysis-result').classList.remove('hidden');
-      document.getElementById('ai-advice').textContent = result.advice || 'Nessun consiglio fornito.';
-      document.getElementById('ai-confidence').textContent = (result.confidence || 'Media') + ' Precisione';
-
-      const itemsListContainer = document.getElementById('items-list');
-      itemsListContainer.innerHTML = '';
-
-      let totalP = 0, totalC = 0, totalF = 0;
-
-      result.items.forEach((item, index) => {
-        totalP += item.protein || 0;
-        totalC += item.carbs || 0;
-        totalF += item.fat || 0;
-
-        const row = document.createElement('div');
-        row.className = 'flex items-center justify-between bg-gray-50 p-2.5 rounded-lg text-xs';
-        row.innerHTML = `
-          <div>
-            <span class="font-bold text-gray-800">${item.name}</span>
-            <span class="text-gray-400 block">${item.grams}g</span>
-          </div>
-          <div class="text-right">
-            <span class="font-bold text-emerald-600 block">${item.kcal} kcal</span>
-            <span class="text-[10px] text-gray-400">P:${item.protein}g C:${item.carbs}g F:${item.fat}g</span>
-          </div>
-        `;
-        itemsListContainer.appendChild(row);
-      });
-
-      renderChart(totalP, totalC, totalF);
-    }
-
-    // RENDER GRAFICO CHART.JS
-    function renderChart(p, c, f) {
-      const ctx = document.getElementById('macroChart').getContext('2d');
-      if (chartInstance) chartInstance.destroy();
-
-      chartInstance = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Proteine (g)', 'Carbo (g)', 'Grassi (g)'],
-          datasets: [{
-            data: [p, c, f],
-            backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444']
-          }]
-        },
-        options: {
-          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
-        }
-      });
-    }
-
-    // SALVA PASTO NEL DIARIO
-    function saveMealToDiary() {
-      if (!currentAnalysisResult || !currentAnalysisResult.items) return;
-
-      const mealType = document.getElementById('meal-type-select').value;
-      
-      currentAnalysisResult.items.forEach(item => {
-        diaryData[mealType].push(item);
-      });
-
-      localStorage.setItem('diaryData', JSON.stringify(diaryData));
-      renderDiary();
-      switchTab('diary');
-      alert('Pasto aggiunto con successo al diario!');
-    }
-
-    // RENDER DIARIO
-    function renderDiary() {
-      let grandTotalKcal = 0;
-      let grandTotalP = 0;
-      let grandTotalC = 0;
-
-      ['Colazione', 'Pranzo', 'Cena', 'Spuntini'].forEach(type => {
-        const container = document.getElementById('list-' + type.toLowerCase());
-        const kcalLabel = document.getElementById('kcal-' + type.toLowerCase());
-        const items = diaryData[type] || [];
-
-        let typeKcal = 0;
-        container.innerHTML = '';
-
-        if (items.length === 0) {
-          container.innerHTML = '<p class="text-xs text-gray-400 italic py-1">Nessun alimento inserito</p>';
-        } else {
-          items.forEach((item, idx) => {
-            typeKcal += item.kcal || 0;
-            grandTotalP += item.protein || 0;
-            grandTotalC += item.carbs || 0;
-
-            const div = document.createElement('div');
-            div.className = 'flex justify-between items-center py-1.5';
-            div.innerHTML = `
-              <span>${item.name} <small class="text-gray-400">(${item.grams}g)</small></span>
-              <div class="flex items-center gap-2">
-                <span class="font-medium text-emerald-600">${item.kcal} kcal</span>
-                <button onclick="removeItem('${type}', ${idx})" class="text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button>
-              </div>
-            `;
-            container.appendChild(div);
-          });
-        }
-
-        kcalLabel.textContent = typeKcal + ' kcal';
-        grandTotalKcal += typeKcal;
-      });
-
-      document.getElementById('total-kcal').textContent = grandTotalKcal;
-      document.getElementById('total-protein').textContent = grandTotalP + 'g';
-      document.getElementById('total-carbs').textContent = grandTotalC + 'g';
-
-      const progressPct = Math.min(100, Math.round((grandTotalKcal / userTargets.kcal) * 100));
-      document.getElementById('kcal-progress-bar').style.width = progressPct + '%';
-    }
-
-    function removeItem(type, index) {
-      diaryData[type].splice(index, 1);
-      localStorage.setItem('diaryData', JSON.stringify(diaryData));
-      renderDiary();
-    }
-
-    // CALCOLO BMR
-    function calculateBMR(event) {
-      event.preventDefault();
-      const gender = document.getElementById('user-gender').value;
-      const age = parseFloat(document.getElementById('user-age').value);
-      const height = parseFloat(document.getElementById('user-height').value);
-      const weight = parseFloat(document.getElementById('user-weight').value);
-      const activity = parseFloat(document.getElementById('user-activity').value);
-
-      // Mifflin-St Jeor
-      let bmr = (10 * weight) + (6.25 * height) - (5 * age);
-      bmr += (gender === 'male') ? 5 : -161;
-
-      const tdee = Math.round(bmr * activity);
-
-      userTargets = {
-        kcal: tdee,
-        protein: Math.round((tdee * 0.25) / 4),
-        carbs: Math.round((tdee * 0.50) / 4),
-        fat: Math.round((tdee * 0.25) / 9)
-      };
-
-      localStorage.setItem('userTargets', JSON.stringify(userTargets));
-      updateTargetsUI();
-      renderDiary();
-      switchTab('diary');
-      alert(`Obiettivo aggiornato: ${tdee} kcal al giorno!`);
-    }
-
-    function updateTargetsUI() {
-      document.getElementById('target-kcal-label').textContent = userTargets.kcal;
-      document.getElementById('target-protein-label').textContent = userTargets.protein;
-      document.getElementById('target-carbs-label').textContent = userTargets.carbs;
-    }
-  </script>
-</body>
-</html>
+        // Pulisce la risposta da eventuali marcatori markdown ```json ... ```
+        responseText = responseText.replace(/```json/gi, '').replace(/
