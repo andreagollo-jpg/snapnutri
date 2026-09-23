@@ -5,29 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>SnapNutri AI</title>
   
-  <!-- Web App Capabilities & PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#10b981">
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     .pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
     .pt-safe { padding-top: max(1rem, env(safe-area-inset-top)); }
     body { -webkit-tap-highlight-color: transparent; }
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 antialiased selection:bg-emerald-500 selection:text-white pb-24">
+<body class="bg-gray-50 font-sans text-gray-800 antialiased pb-24">
 
-  <!-- TOP HEADER MOBILE -->
+  <!-- HEADER -->
   <header class="sticky top-0 z-30 bg-emerald-600 text-white pt-safe shadow-md">
     <div class="px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-2">
@@ -42,13 +36,11 @@
     </div>
   </header>
 
-  <!-- MAIN APP CONTAINER -->
+  <!-- CONTENUTO PRINCIPALE -->
   <main class="max-w-md mx-auto px-4 pt-4">
 
-    <!-- SEZIONE TAB: DIARIO ALIMENTARE -->
+    <!-- TAB DIARIO -->
     <div id="tab-diary" class="tab-content space-y-4">
-      
-      <!-- SUMMARY CALORIE CARD -->
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
         <div class="flex justify-between items-center text-sm text-gray-500 font-medium">
           <span>Riepilogo Giornaliero</span>
@@ -73,7 +65,6 @@
           </div>
         </div>
 
-        <!-- PROGRESS BAR CALORIE -->
         <div>
           <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
             <div id="kcal-progress-bar" class="bg-emerald-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
@@ -81,93 +72,68 @@
         </div>
       </div>
 
-      <!-- PASTI DEL GIORNO -->
       <div class="space-y-3">
         <!-- Colazione -->
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="font-bold text-gray-700 flex items-center gap-2">
-              <i class="fa-solid fa-mug-saucer text-amber-500"></i> Colazione
-            </h3>
+            <h3 class="font-bold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-mug-saucer text-amber-500"></i> Colazione</h3>
             <span id="kcal-colazione" class="text-sm font-semibold text-gray-500">0 kcal</span>
           </div>
-          <div id="list-colazione" class="space-y-1 text-sm text-gray-600 divide-y divide-gray-50">
-            <p class="text-xs text-gray-400 italic py-1">Nessun alimento inserito</p>
-          </div>
+          <div id="list-colazione" class="space-y-1 text-sm text-gray-600 divide-y divide-gray-50"></div>
         </div>
-
         <!-- Pranzo -->
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="font-bold text-gray-700 flex items-center gap-2">
-              <i class="fa-solid fa-utensils text-emerald-500"></i> Pranzo
-            </h3>
+            <h3 class="font-bold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-utensils text-emerald-500"></i> Pranzo</h3>
             <span id="kcal-pranzo" class="text-sm font-semibold text-gray-500">0 kcal</span>
           </div>
-          <div id="list-pranzo" class="space-y-1 text-sm text-gray-600 divide-y divide-gray-50">
-            <p class="text-xs text-gray-400 italic py-1">Nessun alimento inserito</p>
-          </div>
+          <div id="list-pranzo" class="space-y-1 text-sm text-gray-600 divide-y divide-gray-50"></div>
         </div>
-
         <!-- Cena -->
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="font-bold text-gray-700 flex items-center gap-2">
-              <i class="fa-solid fa-moon text-indigo-500"></i> Cena
-            </h3>
+            <h3 class="font-bold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-moon text-indigo-500"></i> Cena</h3>
             <span id="kcal-cena" class="text-sm font-semibold text-gray-500">0 kcal</span>
           </div>
-          <div id="list-cena" class="space-y-1 text-sm text-gray-600 divide-y divide-gray-50">
-            <p class="text-xs text-gray-400 italic py-1">Nessun alimento inserito</p>
-          </div>
+          <div id="list-cena" class="space-y-1 text-sm text-gray-600 divide-y divide-gray-50"></div>
         </div>
-
         <!-- Spuntini -->
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="font-bold text-gray-700 flex items-center gap-2">
-              <i class="fa-solid fa-apple-whole text-rose-500"></i> Spuntini
-            </h3>
+            <h3 class="font-bold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-apple-whole text-rose-500"></i> Spuntini</h3>
             <span id="kcal-spuntini" class="text-sm font-semibold text-gray-500">0 kcal</span>
           </div>
-          <div id="list-spuntini" class="space-y-1 text-sm text-gray-600 divide-y divide-gray-50">
-            <p class="text-xs text-gray-400 italic py-1">Nessun alimento inserito</p>
-          </div>
+          <div id="list-spuntini" class="space-y-1 text-sm text-gray-600 divide-y divide-gray-50"></div>
         </div>
       </div>
     </div>
 
-    <!-- SEZIONE TAB: FOTOCAMERA / SCANSIONE -->
+    <!-- TAB SCANSIONE -->
     <div id="tab-scan" class="tab-content hidden space-y-4">
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center space-y-4">
         <h2 class="text-lg font-bold text-gray-800">Scansiona il tuo Piatto</h2>
-        <p class="text-xs text-gray-500">Scatta una foto o selezionala dalla tua galleria per calcolare automaticamente calorie e macronutrienti con l'AI.</p>
+        <p class="text-xs text-gray-500">Scatta una foto o sceglila dalla galleria per analizzarla con l'AI.</p>
 
-        <!-- INPUT FOTO -->
-        <div class="space-y-2">
-          <input type="file" id="camera-input" accept="image/*" capture="environment" class="hidden" onchange="handleImageSelect(event)">
-          <input type="file" id="gallery-input" accept="image/*" class="hidden" onchange="handleImageSelect(event)">
+        <!-- INPUT FILE COMPATIBILI MOBILE -->
+        <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="handleImageSelect(event)">
 
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="document.getElementById('camera-input').click()" class="bg-emerald-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:bg-emerald-700 transition flex items-center justify-center gap-2 text-sm">
-              <i class="fa-solid fa-camera text-base"></i> Scatta Foto
-            </button>
-            <button onclick="document.getElementById('gallery-input').click()" class="bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-xl border border-gray-200 hover:bg-gray-200 transition flex items-center justify-center gap-2 text-sm">
-              <i class="fa-solid fa-image text-base"></i> Galleria
-            </button>
-          </div>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="triggerFileInput(true)" class="bg-emerald-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:bg-emerald-700 transition flex items-center justify-center gap-2 text-sm">
+            <i class="fa-solid fa-camera text-base"></i> Scatta Foto
+          </button>
+          <button onclick="triggerFileInput(false)" class="bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-xl border border-gray-200 hover:bg-gray-200 transition flex items-center justify-center gap-2 text-sm">
+            <i class="fa-solid fa-image text-base"></i> Galleria
+          </button>
         </div>
 
-        <!-- PREVIEW FOTO -->
         <div id="photo-preview-container" class="hidden relative rounded-xl overflow-hidden bg-black max-h-64 flex items-center justify-center">
           <img id="photo-preview" src="" class="max-h-64 object-contain">
         </div>
 
-        <!-- SELEZIONE PASTO & ANALIZZA BUTTON -->
         <div id="scan-actions" class="hidden space-y-3">
           <div class="flex items-center gap-2 text-left">
             <label class="text-xs font-semibold text-gray-600">Assegna a:</label>
-            <select id="meal-type-select" class="bg-gray-50 border border-gray-200 text-sm rounded-lg p-2 focus:ring-emerald-500 focus:border-emerald-500 font-medium text-gray-700 flex-1">
+            <select id="meal-type-select" class="bg-gray-50 border border-gray-200 text-sm rounded-lg p-2 font-medium text-gray-700 flex-1">
               <option value="Colazione">Colazione</option>
               <option value="Pranzo" selected>Pranzo</option>
               <option value="Cena">Cena</option>
@@ -180,14 +146,12 @@
           </button>
         </div>
 
-        <!-- SPINNER DI CARICAMENTO -->
         <div id="loading-spinner" class="hidden py-8 space-y-3">
           <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
-          <p class="text-xs font-semibold text-emerald-600">Gemini sta analizzando la foto...</p>
+          <p class="text-xs font-semibold text-emerald-600">Analisi in corso con Gemini AI...</p>
         </div>
       </div>
 
-      <!-- RISULTATO ANALISI -->
       <div id="analysis-result" class="hidden bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-4">
         <div class="flex justify-between items-center border-b pb-2">
           <h3 class="font-bold text-gray-800">Risultato Analisi AI</h3>
@@ -196,30 +160,25 @@
 
         <p id="ai-advice" class="text-xs text-gray-600 italic bg-gray-50 p-2.5 rounded-lg border border-gray-100"></p>
 
-        <!-- MACRO GRAPH CHART -->
         <div class="w-full max-w-[200px] mx-auto">
           <canvas id="macroChart"></canvas>
         </div>
 
-        <!-- ALIMENTI RILEVATI -->
         <div>
           <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Ingredienti Rilevati</h4>
           <div id="items-list" class="space-y-2"></div>
         </div>
 
-        <!-- SALVA NEL DIARIO -->
         <button onclick="saveMealToDiary()" class="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl shadow hover:bg-emerald-700 transition">
           <i class="fa-solid fa-plus-circle mr-1"></i> Aggiungi al Diario
         </button>
       </div>
     </div>
 
-    <!-- SEZIONE TAB: CALCOLATORE BMR / OBIETTIVI -->
+    <!-- TAB OBIETTIVI -->
     <div id="tab-calculator" class="tab-content hidden space-y-4">
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-4">
         <h2 class="text-lg font-bold text-gray-800">Calcolo Fabbisogno Calorico</h2>
-        <p class="text-xs text-gray-500">Inserisci i tuoi dati fisici per calcolare il BMR e definire il tuo obiettivo giornaliero (Formula Mifflin-St Jeor).</p>
-
         <form id="bmr-form" onsubmit="calculateBMR(event)" class="space-y-3 text-sm">
           <div class="grid grid-cols-2 gap-3">
             <div>
@@ -230,7 +189,7 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-600 mb-1">Età (anni)</label>
+              <label class="block text-xs font-semibold text-gray-600 mb-1">Età</label>
               <input type="number" id="user-age" required value="30" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5">
             </div>
           </div>
@@ -249,15 +208,15 @@
           <div>
             <label class="block text-xs font-semibold text-gray-600 mb-1">Livello Attività</label>
             <select id="user-activity" class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5">
-              <option value="1.2">Sedentario (poco o nessun esercizio)</option>
-              <option value="1.375" selected>Leggermente attivo (1-3 gg/settimana)</option>
-              <option value="1.55">Moderatamente attivo (3-5 gg/settimana)</option>
-              <option value="1.725">Molto attivo (6-7 gg/settimana)</option>
+              <option value="1.2">Sedentario</option>
+              <option value="1.375" selected>Leggermente attivo</option>
+              <option value="1.55">Moderatamente attivo</option>
+              <option value="1.725">Molto attivo</option>
             </select>
           </div>
 
           <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl shadow hover:bg-emerald-700 transition">
-            Calcola e Salva Obiettivi
+            Calcola e Salva
           </button>
         </form>
       </div>
@@ -265,23 +224,22 @@
 
   </main>
 
-  <!-- MODALE IMPOSTAZIONI (API KEY) -->
+  <!-- MODALE SETTINGS -->
   <div id="settings-modal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl">
       <div class="flex justify-between items-center border-b pb-2">
-        <h3 class="font-bold text-gray-800">Impostazioni API Key</h3>
-        <button onclick="closeSettings()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <h3 class="font-bold text-gray-800">Chiave API Gemini</h3>
+        <button onclick="closeSettings()" class="text-gray-400"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-      <p class="text-xs text-gray-500">Inserisci la tua Google Gemini API Key per consentire all'app di analizzare le immagini dei piatti.</p>
+      <p class="text-xs text-gray-500">Incolla la tua Gemini API Key creata su Google AI Studio.</p>
       <div>
-        <label class="block text-xs font-semibold text-gray-600 mb-1">Gemini API Key</label>
         <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full border border-gray-200 rounded-lg p-2.5 text-sm">
       </div>
       <button onclick="saveApiKey()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl">Salva Chiave</button>
     </div>
   </div>
 
-  <!-- NAVIGATION BAR IN BASSO (NATIVA MOBILE) -->
+  <!-- NAVBAR MOBILE -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 pb-safe">
     <div class="max-w-md mx-auto grid grid-cols-3 text-center py-2">
       <button onclick="switchTab('diary')" id="nav-diary" class="nav-btn text-emerald-600 flex flex-col items-center gap-1">
@@ -299,131 +257,282 @@
     </div>
   </nav>
 
-  <!-- JS LOGIC -->
+  <!-- LOGICA JAVASCRIPT -->
   <script>
-    // DATA STATE
-    let currentImageBase64 = null;
+    let resizedImageBase64 = null;
     let currentAnalysisResult = null;
     let chartInstance = null;
 
-    let userTargets = JSON.parse(localStorage.getItem('userTargets')) || {
-      kcal: 2000,
-      protein: 120,
-      carbs: 250,
-      fat: 65
-    };
+    let userTargets = JSON.parse(localStorage.getItem('userTargets')) || { kcal: 2000, protein: 120, carbs: 250, fat: 65 };
+    let diaryData = JSON.parse(localStorage.getItem('diaryData')) || { Colazione: [], Pranzo: [], Cena: [], Spuntini: [] };
 
-    let diaryData = JSON.parse(localStorage.getItem('diaryData')) || {
-      Colazione: [],
-      Pranzo: [],
-      Cena: [],
-      Spuntini: []
-    };
-
-    // INIT APP
     window.onload = function() {
       updateTargetsUI();
       renderDiary();
     };
 
-    // TAB NAVIGATION
     function switchTab(tabName) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.replace('text-emerald-600', 'text-gray-400'));
-
       document.getElementById('tab-' + tabName).classList.remove('hidden');
       document.getElementById('nav-' + tabName).classList.replace('text-gray-400', 'text-emerald-600');
     }
 
-    // API KEY SETTINGS
     function openSettings() {
       document.getElementById('api-key-input').value = localStorage.getItem('gemini_api_key') || '';
       document.getElementById('settings-modal').classList.remove('hidden');
     }
-    function closeSettings() {
-      document.getElementById('settings-modal').classList.add('hidden');
-    }
+    function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
     function saveApiKey() {
       const key = document.getElementById('api-key-input').value.trim();
       localStorage.setItem('gemini_api_key', key);
-      alert('API Key salvata con successo!');
+      alert('Chiave salvata!');
       closeSettings();
     }
 
-    // FOTO HANDLING
+    // GESTIONE SELEZIONE/SCATTO FOTO UNIVERSALE
+    function triggerFileInput(isCamera) {
+      const input = document.getElementById('photo-input');
+      if (isCamera) {
+        input.setAttribute('capture', 'environment');
+      } else {
+        input.removeAttribute('capture');
+      }
+      input.click();
+    }
+
     function handleImageSelect(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = function(e) {
-        currentImageBase64 = e.target.result;
-        document.getElementById('photo-preview').src = currentImageBase64;
-        document.getElementById('photo-preview-container').classList.remove('hidden');
-        document.getElementById('scan-actions').classList.remove('hidden');
-        document.getElementById('analysis-result').classList.add('hidden');
+        const img = new Image();
+        img.onload = function() {
+          // RIDIMENSIONA E COMPRIME L'IMMAGINE PER L'ENVIO VELOCE
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 1024;
+
+          if (width > height && width > maxDim) {
+            height *= maxDim / width;
+            width = maxDim;
+          } else if (height > maxDim) {
+            width *= maxDim / height;
+            height = maxDim;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          resizedImageBase64 = canvas.toDataURL('image/jpeg', 0.85);
+          
+          document.getElementById('photo-preview').src = resizedImageBase64;
+          document.getElementById('photo-preview-container').classList.remove('hidden');
+          document.getElementById('scan-actions').classList.remove('hidden');
+          document.getElementById('analysis-result').classList.add('hidden');
+        };
+        img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    // ANALISI CON API GEMINI (MODELLO GEMINI-2.5-FLASH CON ENDPOINT AGGIORNATO)
+    // ANALISI CON FALLBACK DEI MODELLI GEMINI
     async function analyzePhoto() {
       const apiKey = localStorage.getItem('gemini_api_key');
       if (!apiKey) {
-        alert('Inserisci la tua Gemini API Key nelle impostazioni (icona ingranaggio in alto)!');
+        alert('Inserisci prima la tua Gemini API Key nelle impostazioni (icona ingranaggio in alto)!');
         openSettings();
         return;
       }
 
       document.getElementById('loading-spinner').classList.remove('hidden');
       document.getElementById('scan-actions').classList.add('hidden');
-      document.getElementById('analysis-result').classList.add('hidden');
 
-      try {
-        const base64Data = currentImageBase64.split(',')[1];
-        const mimeType = currentImageBase64.split(';')[0].split(':')[1] || 'image/jpeg';
-        
-        const promptText = `Sei un nutrizionista esperto. Analizza l'immagine di questo piatto e restituisci ESCLUSIVAMENTE un oggetto JSON valido (senza blocchi markdown, senza testo iniziale o finale) con la seguente struttura:
+      const base64Data = resizedImageBase64.split(',')[1];
+      const promptText = `Analizza questo piatto e rispondi ESCLUSIVAMENTE con un JSON valido con questa struttura:
 {
-  "advice": "breve consiglio o descrizione del piatto",
+  "advice": "breve commento nutrizionale sul piatto",
   "confidence": "Alta",
   "items": [
-    {
-      "name": "nome alimento",
-      "grams": 150,
-      "kcal": 200,
-      "protein": 15,
-      "carbs": 25,
-      "fat": 5
-    }
+    { "name": "nome cibo", "grams": 100, "kcal": 150, "protein": 10, "carbs": 20, "fat": 5 }
   ]
 }`;
 
-        // Chiamata aggiornata all'endpoint gemini-2.5-flash
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              parts: [
-                { text: promptText },
-                { inline_data: { mime_type: mimeType, data: base64Data } }
-              ]
-            }]
-          })
+      // Tenta prima con gemini-1.5-flash e poi con gemini-2.0-flash se fallisce
+      const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash'];
+      let success = false;
+
+      for (let model of modelsToTry) {
+        try {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [
+                  { text: promptText },
+                  { inline_data: { mime_type: 'image/jpeg', data: base64Data } }
+                ]
+              }]
+            })
+          });
+
+          const data = await res.json();
+          if (data.error) throw new Error(data.error.message);
+
+          let text = data.candidates[0].content.parts[0].text;
+          text = text.replace(/```json/gi, '').replace(/```/gi, '').trim();
+
+          currentAnalysisResult = JSON.parse(text);
+          displayAnalysisResult(currentAnalysisResult);
+          success = true;
+          break;
+        } catch (err) {
+          console.warn(`Tentativo con ${model} fallito:`, err);
+        }
+      }
+
+      document.getElementById('loading-spinner').classList.add('hidden');
+      if (!success) {
+        alert('Impossibile analizzare la foto. Verificare che la chiave API sia valida e che la connessione sia attiva.');
+        document.getElementById('scan-actions').classList.remove('hidden');
+      }
+    }
+
+    function displayAnalysisResult(result) {
+      document.getElementById('analysis-result').classList.remove('hidden');
+      document.getElementById('ai-advice').textContent = result.advice || '';
+      document.getElementById('ai-confidence').textContent = (result.confidence || 'Media') + ' Precisione';
+
+      const container = document.getElementById('items-list');
+      container.innerHTML = '';
+
+      let p = 0, c = 0, f = 0;
+      result.items.forEach(item => {
+        p += item.protein || 0;
+        c += item.carbs || 0;
+        f += item.fat || 0;
+
+        const row = document.createElement('div');
+        row.className = 'flex justify-between bg-gray-50 p-2.5 rounded-lg text-xs';
+        row.innerHTML = `
+          <div>
+            <span class="font-bold text-gray-800">${item.name}</span>
+            <span class="text-gray-400 block">${item.grams}g</span>
+          </div>
+          <div class="text-right">
+            <span class="font-bold text-emerald-600 block">${item.kcal} kcal</span>
+            <span class="text-[10px] text-gray-400">P:${item.protein}g C:${item.carbs}g F:${item.fat}g</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      renderChart(p, c, f);
+    }
+
+    function renderChart(p, c, f) {
+      const ctx = document.getElementById('macroChart').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Prot (g)', 'Carb (g)', 'Gras (g)'],
+          datasets: [{ data: [p, c, f], backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'] }]
+        },
+        options: { plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+
+    function saveMealToDiary() {
+      if (!currentAnalysisResult) return;
+      const type = document.getElementById('meal-type-select').value;
+      currentAnalysisResult.items.forEach(item => diaryData[type].push(item));
+      localStorage.setItem('diaryData', JSON.stringify(diaryData));
+      renderDiary();
+      switchTab('diary');
+      alert('Aggiunto al diario!');
+    }
+
+    function renderDiary() {
+      let grandTotalKcal = 0, grandTotalP = 0, grandTotalC = 0;
+
+      ['Colazione', 'Pranzo', 'Cena', 'Spuntini'].forEach(type => {
+        const container = document.getElementById('list-' + type.toLowerCase());
+        const kcalLabel = document.getElementById('kcal-' + type.toLowerCase());
+        const items = diaryData[type] || [];
+        let typeKcal = 0;
+
+        container.innerHTML = items.length === 0 ? '<p class="text-xs text-gray-400 italic py-1">Nessun alimento</p>' : '';
+
+        items.forEach((item, idx) => {
+          typeKcal += item.kcal || 0;
+          grandTotalP += item.protein || 0;
+          grandTotalC += item.carbs || 0;
+
+          const div = document.createElement('div');
+          div.className = 'flex justify-between items-center py-1';
+          div.innerHTML = `
+            <span>${item.name} <small class="text-gray-400">(${item.grams}g)</small></span>
+            <div class="flex items-center gap-2">
+              <span class="font-medium text-emerald-600">${item.kcal} kcal</span>
+              <button onclick="removeItem('${type}', ${idx})" class="text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          `;
+          container.appendChild(div);
         });
 
-        const data = await response.json();
-        
-        if (data.error) {
-          throw new Error(data.error.message || 'Errore durante la chiamata API');
-        }
+        kcalLabel.textContent = typeKcal + ' kcal';
+        grandTotalKcal += typeKcal;
+      });
 
-        if (!data.candidates || !data.candidates[0].content) {
-          throw new Error('Nessun risultato restituito dall\'AI');
-        }
+      document.getElementById('total-kcal').textContent = grandTotalKcal;
+      document.getElementById('total-protein').textContent = grandTotalP + 'g';
+      document.getElementById('total-carbs').textContent = grandTotalC + 'g';
+      const pct = Math.min(100, Math.round((grandTotalKcal / userTargets.kcal) * 100));
+      document.getElementById('kcal-progress-bar').style.width = pct + '%';
+    }
 
-        let responseText = data.candidates[0].content.parts[0].text;
-        
-        // Pulisce la risposta da eventuali marcatori markdown ```json ... ```
-        responseText = responseText.replace(/```json/gi, '').replace(/
+    function removeItem(type, index) {
+      diaryData[type].splice(index, 1);
+      localStorage.setItem('diaryData', JSON.stringify(diaryData));
+      renderDiary();
+    }
+
+    function calculateBMR(e) {
+      e.preventDefault();
+      const gender = document.getElementById('user-gender').value;
+      const age = parseFloat(document.getElementById('user-age').value);
+      const height = parseFloat(document.getElementById('user-height').value);
+      const weight = parseFloat(document.getElementById('user-weight').value);
+      const activity = parseFloat(document.getElementById('user-activity').value);
+
+      let bmr = (10 * weight) + (6.25 * height) - (5 * age) + (gender === 'male' ? 5 : -161);
+      const tdee = Math.round(bmr * activity);
+
+      userTargets = {
+        kcal: tdee,
+        protein: Math.round((tdee * 0.25) / 4),
+        carbs: Math.round((tdee * 0.50) / 4),
+        fat: Math.round((tdee * 0.25) / 9)
+      };
+
+      localStorage.setItem('userTargets', JSON.stringify(userTargets));
+      updateTargetsUI();
+      renderDiary();
+      switchTab('diary');
+      alert(`Nuovo obiettivo impostato: ${tdee} kcal!`);
+    }
+
+    function updateTargetsUI() {
+      document.getElementById('target-kcal-label').textContent = userTargets.kcal;
+      document.getElementById('target-protein-label').textContent = userTargets.protein;
+      document.getElementById('target-carbs-label').textContent = userTargets.carbs;
+    }
+  </script>
+</body>
+</html>
